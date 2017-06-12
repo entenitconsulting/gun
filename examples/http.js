@@ -5,15 +5,23 @@ var Gun = require('../');
 var server = require('http').createServer(function(req, res){
 	if(Gun.serve(req, res)){ return } // filters gun requests!
 	require('fs').createReadStream(require('path').join(__dirname, req.url)).on('error',function(){ // static files!
-		res.writeHead(200, {'Content-Type': 'text/html'});
-		res.end(require('fs')
-			.readFileSync(require('path')
-			.join(__dirname, 'index.html') // or default to index
-		));
+		if(req.url === '/data.json') {
+			res.writeHead(200, {'Content-Type': 'application/json'});
+			res.end(require('fs')
+				.readFileSync(require('path')
+				.join(__dirname, '../data.json') // or default to index
+			));
+		} else {
+			res.writeHead(200, {'Content-Type': 'text/html'});
+			res.end(require('fs')
+				.readFileSync(require('path')
+				.join(__dirname, 'index.html') // or default to index
+			));
+		}
 	}).pipe(res); // stream
 });
 
-var gun = Gun({ 
+var gun = Gun({
 	file: 'data.json',
 	web: server,
 	s3: {
