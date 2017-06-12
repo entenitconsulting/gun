@@ -35,4 +35,4 @@ gun.on('out', {get: {'#': {'*': ''}}});
 
 server.listen(port);
 
-console.log('Server started on port ' + port + ' with /gun');
+console.log('EITC Server started on port ' + port + ' with /gun');
